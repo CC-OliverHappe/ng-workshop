@@ -1,32 +1,306 @@
 # NgWorkshop
 
-## Aufgaben
+Dieses Tutorial führt dich Schritt für Schritt durch die Entwicklung einer modernen Todo-Anwendung mit Angular. Du lernst dabei die wichtigsten Konzepte wie Components, Services, Signals, Routing und HTTP-Kommunikation kennen.
 
-1. Checkout Repo & npm install
-2. Zeige die Todos aus der `data/todos.ts` Datei in deiner app.component an
-3. Extrahiere sinnvolle Components
-   * zum Beispiel: `TodoList` und `TodoItem`
-4. Lade die Daten statt aus Todos.ts von der Api (GET `/todos`)
-   * nutze den `HttpClient`
-5. Erstelle einen `TodoHttpService` um die Daten zu laden
-6. Erstelle einen `TodoStateService` welcher die geladenen Daten als Signal bereitstellt
-7. Erstelle eine Component um Todos hinzuzufügen 
-   * Erstelle ein Formularfeld und einen Submit Button - nutze `ReactiveForms`
-   * Erstelle `createTodo` im StateService und rufe die API im HttpService auf (POST `/todos`)
-8. Implementiere das Abschließen von Todos
-   * Output aus TodoItem
-   * Calle PUT `/todos/:id`
-   * Aktuellen Zustand im State abbilden
-   * Zeige den Zustand eines Todos im UI
-9. Zeige eine Summary deiner Todos (Offen / Gesamt && Abgeschlossene Todos) im UI an
-   * nutze computed um den Zustand abzuleiten
-10. Lege eine neue Route im Angular-Router an und zeige die TodoList über RouterOutlet an
-    * Nutze Lazy-Loading
-11. Erstelle eine `TodoDetail`-Component
-    * Löse sie über den Angular Router auf (ID als `RouteParameter`)
-    * Zeige das Todo an (Wie bekomme ich ein Item aus dem State?)
-12. Erstelle einen `RouteGuard` - Prüfe ob die ID im RouteParameter existiert und valide ist
-13. Erstelle eine `DateFormat`-Pipe um den createdAt und finishedAt Timestamps als formatierte Datumsangaben anzuzeigen
+## Voraussetzungen
+
+- Node.js und npm installiert
+- Grundkenntnisse in TypeScript
+- Ein Code-Editor (z.B. VS Code)
+
+## Setup
+
+### 0. Repository auschecken und Abhängigkeiten installieren
+
+Klone das Repository und installiere alle benötigten Pakete:
+```bash
+git clone 
+cd 
+npm install
+```
+
+Starte die Entwicklungsumgebung mit `ng serve` und öffne die App im Browser unter `http://localhost:4200`.
+
+### 1. Starte die Beispiel-API
+
+```baseh
+cd api
+npm install
+npm run dev
+```
+
+Öffne die API-Dokumentation unter `http://localhost:3100/api`.
+
+## Grundlegende Implementierung
+
+### 2. Todos in der App anzeigen
+
+**Lernziel:** Verstehen, wie Daten in Angular Components dargestellt werden.
+
+- Importiere die Todos aus `src/app/data/todos.ts` in die `AppComponent`
+- Zeige die Todo-Liste im Template an
+- Gib für jedes Todo mindestens den Titel aus
+
+**Hinweis:** Nutze die `@for`-Syntax für das Rendering der Liste.
+
+---
+
+### 3. Sinnvolle Components extrahieren
+
+**Lernziel:** Component-basierte Architektur und Wiederverwendbarkeit verstehen.
+
+Extrahiere die Todo-Darstellung in separate Components:
+
+- **`TodoListComponent`**: Zeigt die gesamte Liste der Todos an
+- **`TodoItemComponent`**: Stellt ein einzelnes Todo dar
+
+**Best Practice:** Jede Component sollte eine klar definierte Verantwortlichkeit haben. Nutze `@Input()` um Daten an Child-Components zu übergeben.
+
+---
+
+## API-Integration
+
+### 4. Todos über eine API laden
+
+**Lernziel:** HTTP-Kommunikation in Angular mit dem `HttpClient`.
+
+- Entferne die statischen Imports aus `todos.ts`
+- Lade die Todos stattdessen von der API
+- **Endpoint:** `GET /todos`
+- Importiere `HttpClient` in deine Component
+- Speichere die geladenen Todos in einer Component-Property
+
+**Tipp:** Vergiss nicht, den `HttpClient` im `provideHttpClient()` bereitzustellen (in `app.config.ts` oder `main.ts`).
+
+---
+
+### 5. HTTP-Service erstellen
+
+**Lernziel:** Separation of Concerns durch dedizierte Services.
+
+Erstelle einen `TodoHttpService`, der alle API-Aufrufe kapselt:
+```bash
+ng generate service services/todo-http
+```
+
+- Lagere die HTTP-Logik aus der Component in den Service aus
+- Der Service sollte Methoden für alle API-Aufrufe bereitstellen
+- Injiziere den Service in die Component
+
+**Vorteil:** Wiederverwendbarkeit und einfachere Testbarkeit.
+
+---
+
+## State Management mit Signals
+
+### 6. State-Service mit Signals
+
+**Lernziel:** Modernes State Management mit Angular Signals.
+
+Erstelle einen `TodoStateService`, der den globalen Zustand verwaltet:
+```bash
+ng generate service services/todo-state
+```
+
+- Nutze `signal()` für den Todo-State
+- Stelle die Todos als `Signal<Todo[]>` bereit
+- Implementiere Methoden zum Laden und Aktualisieren der Todos
+- Der Service sollte den `TodoHttpService` nutzen
+
+**Architektur:** 
+- `TodoHttpService` → API-Aufrufe
+- `TodoStateService` → Zustandsverwaltung
+- Components → Darstellung
+
+---
+
+## CRUD-Operationen
+
+### 7. Todos hinzufügen
+
+**Lernziel:** Formulare mit Reactive Forms und POST-Requests.
+
+Erstelle eine Component für neue Todos:
+```bash
+ng generate component components/todo-form
+```
+
+Implementiere folgende Features:
+- Formular mit `ReactiveFormsModule`
+- Eingabefeld für den Todo-Titel
+- Submit-Button
+- Validierung (z.B. Pflichtfeld, Mindestlänge)
+
+Erweitere den `TodoStateService`:
+- Füge eine `createTodo()`-Methode hinzu
+- Aktualisiere das Signal nach erfolgreicher Erstellung
+
+Erweitere den `TodoHttpService`:
+- **Endpoint:** `POST /todos`
+- Übergib die neuen Todo-Daten im Request-Body
+
+---
+
+### 8. Todos abschließen
+
+**Lernziel:** Component-Kommunikation mit Outputs und PUT-Requests.
+
+Implementiere die Möglichkeit, Todos als erledigt zu markieren:
+
+- Füge einen Button oder Checkbox in `TodoItemComponent` hinzu
+- Emitte ein `@Output()` Event, wenn der Status geändert wird
+- Fange das Event in der Parent-Component ab
+- Aktualisiere das Todo über die API:
+  - **Endpoint:** `PUT /todos/:id`
+- Aktualisiere den State im `TodoStateService`
+
+Stelle den Status visuell dar:
+- Durchgestrichener Text für erledigte Todos
+- Unterschiedliche Farben oder Icons
+
+**Tipp:** Nutze CSS-Klassen basierend auf dem Todo-Status.
+
+---
+
+### 9. Todo-Summary anzeigen
+
+**Lernziel:** Abgeleitete Werte mit `computed()`.
+
+Erstelle eine Übersicht mit Statistiken:
+- Anzahl offener Todos
+- Anzahl abgeschlossener Todos
+- Gesamtanzahl
+
+Zeige die Werte in einer separaten Component oder im Header an.
+
+---
+
+## Routing und Navigation
+
+### 10. Routing hinzufügen
+
+**Lernziel:** Single-Page-Application mit Angular Router und Lazy Loading.
+
+Konfiguriere das Routing in deiner App:
+
+- Definiere Routes in der `app.routes.ts`
+- Zeige die `TodoListComponent` über ein `<router-outlet>` an
+- Implementiere Lazy Loading für bessere Performance:
+```typescript
+{
+  path: 'todos',
+  loadComponent: () => import('./components/todo-list/todo-list.component')
+    .then(m => m.TodoListComponent)
+}
+```
+
+Erstelle eine Navigation mit `routerLink`-Direktiven.
+
+---
+
+### 11. Todo-Detailansicht
+
+**Lernziel:** Route-Parameter und Detail-Views.
+
+Erstelle eine Detailansicht für einzelne Todos:
+```bash
+ng generate component components/todo-detail
+```
+
+In der Component:
+- Lese die ID aus den Route-Parametern (`ActivatedRoute`)
+- Hole das entsprechende Todo aus dem `TodoStateService`
+- Nutze `computed()` um das Todo basierend auf der ID zu filtern
+
+Zeige detaillierte Informationen an:
+- Titel
+- Beschreibung
+- Status
+- Erstellt am / Abgeschlossen am
+
+**Herausforderung:** Wie kann ein einzelnes Todo effizient aus dem State-Signal gelesen werden?
+
+---
+
+### 12. Route Guard implementieren
+
+**Lernziel:** Routing absichern mit Guards.
+
+Erstelle einen Guard, der ungültige Zugriffe verhindert:
+```bash
+ng generate guard guards/todo-exists
+```
+
+Der Guard soll:
+- Die ID aus den Route-Parametern auslesen
+- Prüfen, ob die ID valide ist (z.B. numerisch)
+- Prüfen, ob ein Todo mit dieser ID existiert
+- Bei ungültiger ID: Weiterleitung zur Todo-Liste
+
+Konfiguriere den Guard in der Route:
+```typescript
+{
+  path: 'todos/:id',
+  canActivate: [todoExistsGuard],
+  loadComponent: ...
+}
+```
+
+---
+
+## Fortgeschrittene Features
+
+### 13. Eigene Pipe für Datumsformatierung
+
+**Lernziel:** Custom Pipes für wiederverwendbare Transformationen.
+
+Erstelle eine Pipe für benutzerfreundliche Datumsanzeige:
+```bash
+ng generate pipe pipes/date-format
+```
+
+Die Pipe soll:
+- Timestamps in ein lesbares Format umwandeln
+- Optional verschiedene Formate unterstützen (z.B. kurz, lang)
+- Mit null/undefined-Werten umgehen können
+
+Nutze die Pipe in den Templates:
+```html
+Erstellt: {{ todo.createdAt | dateFormat }}
+Abgeschlossen: {{ todo.finishedAt | dateFormat:'long' }}
+```
+
+**Bonus:** Implementiere relative Zeitangaben wie "vor 2 Stunden" oder "gestern".
+
+---
+
+## Zusammenfassung
+
+Herzlichen Glückwunsch! Du hast eine vollständige Angular-Anwendung erstellt und dabei folgende Konzepte gelernt:
+
+✅ Component-basierte Architektur  
+✅ HTTP-Kommunikation mit APIs  
+✅ State Management mit Signals  
+✅ Reactive Forms  
+✅ Routing und Lazy Loading  
+✅ Route Guards  
+✅ Custom Pipes  
+
+## Nächste Schritte
+
+- **Testing:** Schreibe Unit-Tests für Services und Components
+- **Error Handling:** Implementiere eine globale Fehlerbehandlung
+- **Loading States:** Zeige Ladeindikatoren während API-Aufrufen
+- **Offline Support:** Nutze Service Workers für PWA-Features
+- **Styling:** Verbessere das UI mit Angular Material oder Tailwind CSS
+
+---
+
+## Ressourcen
+
+- [Angular Dokumentation](https://angular.dev)
+- [Angular Signals Guide](https://angular.dev/guide/signals)
+- [Angular Router Guide](https://angular.dev/guide/routing)
 
 ## Development server
 
