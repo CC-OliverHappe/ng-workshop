@@ -23,7 +23,7 @@ Starte die Entwicklungsumgebung mit `ng serve` und öffne die App im Browser unt
 
 ### 1. Starte die Beispiel-API
 
-```baseh
+```base
 cd api
 npm install
 npm run dev
@@ -186,13 +186,6 @@ Konfiguriere das Routing in deiner App:
 - Definiere Routes in der `app.routes.ts`
 - Zeige die `TodoListComponent` über ein `<router-outlet>` an
 - Implementiere Lazy Loading für bessere Performance:
-```typescript
-{
-  path: 'todos',
-  loadComponent: () => import('./components/todo-list/todo-list.component')
-    .then(m => m.TodoListComponent)
-}
-```
 
 Erstelle eine Navigation mit `routerLink`-Direktiven.
 
@@ -237,14 +230,6 @@ Der Guard soll:
 - Prüfen, ob ein Todo mit dieser ID existiert
 - Bei ungültiger ID: Weiterleitung zur Todo-Liste
 
-Konfiguriere den Guard in der Route:
-```typescript
-{
-  path: 'todos/:id',
-  canActivate: [todoExistsGuard],
-  loadComponent: ...
-}
-```
 
 ---
 
