@@ -6,7 +6,7 @@ Dieser Workshopinhalt führt dich Schritt für Schritt durch die Entwicklung ein
 
 - Node.js und npm installiert
 - Grundkenntnisse in TypeScript
-- Ein Code-Editor (z.B. VS Code)
+- Eine IDE
 
 ## Setup
 
