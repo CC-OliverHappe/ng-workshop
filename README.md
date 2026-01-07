@@ -1,6 +1,6 @@
 # NgWorkshop
 
-Dieses Tutorial führt dich Schritt für Schritt durch die Entwicklung einer modernen Todo-Anwendung mit Angular. Du lernst dabei die wichtigsten Konzepte wie Components, Services, Signals, Routing und HTTP-Kommunikation kennen.
+Dieser Workshopinhalt führt dich Schritt für Schritt durch die Entwicklung einer modernen Todo-Anwendung mit Angular. Du lernst dabei die wichtigsten Konzepte wie Components, Services, Signals, Routing und HTTP-Kommunikation kennen.
 
 ## Voraussetzungen
 
@@ -23,7 +23,7 @@ Starte die Entwicklungsumgebung mit `ng serve` und öffne die App im Browser unt
 
 ### 1. Starte die Beispiel-API
 
-```base
+```bash
 cd api
 npm install
 npm run dev
@@ -254,9 +254,6 @@ Nutze die Pipe in den Templates:
 Erstellt: {{ todo.createdAt | dateFormat }}
 Abgeschlossen: {{ todo.finishedAt | dateFormat:'long' }}
 ```
-
-**Bonus:** Implementiere relative Zeitangaben wie "vor 2 Stunden" oder "gestern".
-
 ---
 
 ## Zusammenfassung
