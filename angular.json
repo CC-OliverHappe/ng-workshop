@@ -62,7 +62,7 @@
               "buildTarget": "ng-workshop:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
         },
         "test": {
           "builder": "@angular/build:unit-test"

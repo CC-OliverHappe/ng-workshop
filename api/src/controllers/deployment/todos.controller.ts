@@ -9,11 +9,11 @@ import { CreateTodoDto, TodoDetailsDto, TodoDto, TodosDto, UpdateTodoDto } from 
 @ApiDefaultResponses()
 export class TodosController {
   private readonly todos: TodoDetailsDto[] = [
-    new TodoDetailsDto({ id: uuid.v4(), text: 'Todo1', isCompleted: false }),
-    new TodoDetailsDto({ id: uuid.v4(), text: 'Todo2', isCompleted: false }),
-    new TodoDetailsDto({ id: uuid.v4(), text: 'Todo3', isCompleted: false }),
-    new TodoDetailsDto({ id: uuid.v4(), text: 'Todo4', isCompleted: true, completedAt: new Date() }),
-    new TodoDetailsDto({ id: uuid.v4(), text: 'Todo5', isCompleted: true, completedAt: new Date() }),
+    new TodoDetailsDto({ id: uuid.v4(), text: 'Update documentation', isCompleted: false }),
+    new TodoDetailsDto({ id: uuid.v4(), text: 'Fix bug in todo service', isCompleted: false }),
+    new TodoDetailsDto({ id: uuid.v4(), text: 'Write unit tests', isCompleted: false }),
+    new TodoDetailsDto({ id: uuid.v4(), text: 'Review pull requests', isCompleted: true }),
+    new TodoDetailsDto({ id: uuid.v4(), text: 'Create the App', isCompleted: true }),
   ];
 
   @Get('')

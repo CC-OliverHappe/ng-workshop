@@ -1,6 +1,7 @@
 export interface Todo {
-  id: number;
-  title: string;
-  createdAt: string;
-  completedAt: string | null;
+  id: string;
+  text: string;
+  isCompleted: boolean;
 }
+
+export type NewTodo = Omit<Todo, 'id' | 'completedAt'>;

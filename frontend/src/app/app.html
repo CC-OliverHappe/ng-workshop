@@ -2,7 +2,9 @@
   <div class="bg-white p-6 border border-gray-600 rounded-xl shadow-md mw-100">
     <h1 class="h5 mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">TodoList Workshop</h1>
     <section>
-      Start Here
+      <app-todo-list />
+      <br>
+      <app-todo-form (createTodo)="onCreateTodo($event)"/>
     </section>
   </div>
 </main>

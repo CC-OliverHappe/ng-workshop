@@ -13,6 +13,7 @@ Dieser Workshopinhalt führt dich Schritt für Schritt durch die Entwicklung ein
 ### 0. Repository auschecken und Abhängigkeiten installieren
 
 Klone das Repository und installiere alle benötigten Pakete:
+
 ```bash
 git clone 
 cd 
@@ -31,7 +32,7 @@ npm run dev
 
 Öffne die API-Dokumentation unter `http://localhost:3100/api`.
 
-## Grundlegende Implementierung
+## Erste Session - Grundlegende Implementierung
 
 ### 2. Todos in der App anzeigen
 
@@ -79,6 +80,7 @@ Extrahiere die Todo-Darstellung in separate Components:
 **Lernziel:** Separation of Concerns durch dedizierte Services.
 
 Erstelle einen `TodoHttpService`, der alle API-Aufrufe kapselt:
+
 ```bash
 ng generate service services/todo-http
 ```
@@ -98,6 +100,7 @@ ng generate service services/todo-http
 **Lernziel:** Modernes State Management mit Angular Signals.
 
 Erstelle einen `TodoStateService`, der den globalen Zustand verwaltet:
+
 ```bash
 ng generate service services/todo-state
 ```
@@ -107,7 +110,8 @@ ng generate service services/todo-state
 - Implementiere Methoden zum Laden und Aktualisieren der Todos
 - Der Service sollte den `TodoHttpService` nutzen
 
-**Architektur:** 
+**Architektur:**
+
 - `TodoHttpService` → API-Aufrufe
 - `TodoStateService` → Zustandsverwaltung
 - Components → Darstellung
@@ -121,21 +125,25 @@ ng generate service services/todo-state
 **Lernziel:** Formulare mit Reactive Forms und POST-Requests.
 
 Erstelle eine Component für neue Todos:
+
 ```bash
 ng generate component components/todo-form
 ```
 
 Implementiere folgende Features:
+
 - Formular mit `ReactiveFormsModule`
 - Eingabefeld für den Todo-Titel
 - Submit-Button
 - Validierung (z.B. Pflichtfeld, Mindestlänge)
 
 Erweitere den `TodoStateService`:
+
 - Füge eine `createTodo()`-Methode hinzu
 - Aktualisiere das Signal nach erfolgreicher Erstellung
 
 Erweitere den `TodoHttpService`:
+
 - **Endpoint:** `POST /todos`
 - Übergib die neuen Todo-Daten im Request-Body
 
@@ -155,6 +163,7 @@ Implementiere die Möglichkeit, Todos als erledigt zu markieren:
 - Aktualisiere den State im `TodoStateService`
 
 Stelle den Status visuell dar:
+
 - Durchgestrichener Text für erledigte Todos
 - Unterschiedliche Farben oder Icons
 
@@ -167,6 +176,7 @@ Stelle den Status visuell dar:
 **Lernziel:** Abgeleitete Werte mit `computed()`.
 
 Erstelle eine Übersicht mit Statistiken:
+
 - Anzahl offener Todos
 - Anzahl abgeschlossener Todos
 - Gesamtanzahl
@@ -196,16 +206,19 @@ Erstelle eine Navigation mit `routerLink`-Direktiven.
 **Lernziel:** Route-Parameter und Detail-Views.
 
 Erstelle eine Detailansicht für einzelne Todos:
+
 ```bash
 ng generate component components/todo-detail
 ```
 
 In der Component:
+
 - Lese die ID aus den Route-Parametern (`ActivatedRoute`)
 - Hole das entsprechende Todo aus dem `TodoStateService`
 - Nutze `computed()` um das Todo basierend auf der ID zu filtern
 
 Zeige detaillierte Informationen an:
+
 - Titel
 - Beschreibung
 - Status
@@ -220,16 +233,17 @@ Zeige detaillierte Informationen an:
 **Lernziel:** Routing absichern mit Guards.
 
 Erstelle einen Guard, der ungültige Zugriffe verhindert:
+
 ```bash
 ng generate guard guards/todo-exists
 ```
 
 Der Guard soll:
+
 - Die ID aus den Route-Parametern auslesen
 - Prüfen, ob die ID valide ist (z.B. numerisch)
 - Prüfen, ob ein Todo mit dieser ID existiert
 - Bei ungültiger ID: Weiterleitung zur Todo-Liste
-
 
 ---
 
@@ -240,20 +254,24 @@ Der Guard soll:
 **Lernziel:** Custom Pipes für wiederverwendbare Transformationen.
 
 Erstelle eine Pipe für benutzerfreundliche Datumsanzeige:
+
 ```bash
 ng generate pipe pipes/date-format
 ```
 
 Die Pipe soll:
+
 - Timestamps in ein lesbares Format umwandeln
 - Optional verschiedene Formate unterstützen (z.B. kurz, lang)
 - Mit null/undefined-Werten umgehen können
 
 Nutze die Pipe in den Templates:
+
 ```html
 Erstellt: {{ todo.createdAt | dateFormat }}
 Abgeschlossen: {{ todo.finishedAt | dateFormat:'long' }}
 ```
+
 ---
 
 ## Zusammenfassung
@@ -266,7 +284,7 @@ Herzlichen Glückwunsch! Du hast eine vollständige Angular-Anwendung erstellt u
 ✅ Reactive Forms  
 ✅ Routing und Lazy Loading  
 ✅ Route Guards  
-✅ Custom Pipes  
+✅ Custom Pipes
 
 ## Nächste Schritte
 
@@ -276,13 +294,55 @@ Herzlichen Glückwunsch! Du hast eine vollständige Angular-Anwendung erstellt u
 - **Offline Support:** Nutze Service Workers für PWA-Features
 - **Styling:** Verbessere das UI mit Angular Material oder Tailwind CSS
 
----
-
 ## Ressourcen
 
 - [Angular Dokumentation](https://angular.dev)
 - [Angular Signals Guide](https://angular.dev/guide/signals)
 - [Angular Router Guide](https://angular.dev/guide/routing)
+
+---
+
+# Zweite Session - Testing
+
+In der zweiten Session werden wir uns dem Testing von Angular Components und Services widmen.
+Wir werden uns auf zwei zentrale Test-Strategien konzentrieren:
+
+* Unit-Testing für Business-Logik
+* Component-Testing für UI-Interaktionen
+
+Als Test-Runner nutzen das Projekt Vitest. Starte die Tests entweder über deine IDE oder mit `npm run test`
+
+### Tipps:
+
+* Vermeide es, Implementierungsdetails zu testen. Ein guter Frontend-Test definiert einen Input (Event, User-Interaktion, Function-Call, etc...) der aus der Nutzung der Anwendung ensteht, und testet deren Effekte auf das UI und die API.
+* Bedenke, dass Nutzende auf unterschiedliche Weise mit dem UI interagieren. z.B. Maus- und Tastaturbedienung oder auch fehlerhafte Bedienung (z.B. leeres Formular abschicken). Teste nicht nur den Happy-Path deiner Anwendung.
+* Zu enge UI-Tests können Refactorings signifikant erschweren. Nutze bei UI-Queries Selektoren so, dass sie dein HTML nicht in Stein gießen.
+  `data-testid` Attribute sind hier sehr hilfreich, (z.B. `data-testid="my-target-item"`) anstelle von strikten Selektoren wie `div > div > label ~ input`. Teste die **Semantik** deines html's, nicht die Struktur.
+
+
+1. Starte im `todo-state-service.spec.ts` Test-File
+
+* Einzelne Tests sind bereits angelegt - Sie helfen dir bei der Implementierung der fehlenden Test-Cases
+* Beachte, dass in diesem Test-File zwei verschiedene herangehensweisen beschrieben sind
+* Der Fokus dieses Test-Files liegt auf dem Mocking von Services und Testen von Business-Logik
+
+2. Öffne `todo-list-item.spec.ts`
+
+* Auch hier sind schon Test-Cases die dir beim Start helfen können definiert.
+* Der Fokus liegt auf dem Testen von UI-Interaktionen und dem "Mocken" des Users
+
+3. Öffne `todo-list.spec.ts`
+
+* Die Tests in dieser Component werden etwas herausfordender sein und Techniken aus den ersten beiden Schritten vorraussetzen
+
+4. Öffne `todo-form.spec.ts`
+
+* In dieser Component sind die UI-Interaktionen etwas komplexer.
+* Versuche unterschiedliche Nutzungsarten zu testen (Mausbedienung, Tastaturbedienung)
+
+5. Vervollständigen der Tests in `app.spec.ts` und `todo-http-service.spec.ts`
+
+---
 
 ## Development server
 

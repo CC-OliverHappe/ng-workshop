@@ -1,0 +1,7 @@
+<div>
+  <form (submit)="onSubmit()" [formGroup]="formGroup">
+    <label for="todo-input">Add Todo</label><br>
+    <input id="todo-input" class="border border-gray-700 p-2 mr-4 rounded" type="text" formControlName="text">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Add</button>
+  </form>
+</div>

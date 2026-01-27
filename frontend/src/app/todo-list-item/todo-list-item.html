@@ -1,0 +1,9 @@
+<div>
+  <input class="mr-4"
+         [attr.aria-label]="todo().isCompleted ? 'Reopen Todo' : 'Complete Todo'" type="checkbox"
+         [ngModel]="todo().isCompleted"
+         [disabled]="isLoading()"
+         (ngModelChange)="onNgModelChange()"/>
+  <strong [class]="todo().isCompleted ? 'text-gray-500 line-through' : 'text-gray-950'">{{todo().text}}</strong>
+</div>
+️
