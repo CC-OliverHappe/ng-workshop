@@ -18,9 +18,7 @@ import { provideHttpClient } from '@angular/common/http';
  * @see https://angular.dev/guide/testing/services
  */
 describe('TodoStateService - Service Mocking', () => {
-  //   v  kann gelöscht werden wenn du den mock vervollständigst
-  // @ts-expect-error
-  const MockTodoHttpService: Mocked<TodoHttpService> = {
+  const MockTodoHttpService: Mocked<Partial<TodoHttpService>> = {
     getTodos: vi.fn(() => of({items: MOCK_TODOS}).pipe(take(1))) // mock function mit einem observable das nur einmal einen Wert emitted (.pipe(take(1)) )
   }
 

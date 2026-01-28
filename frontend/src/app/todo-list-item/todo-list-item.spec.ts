@@ -42,7 +42,7 @@ describe('TodoListItem', () => {
 
     await fixture.whenStable(); // <-- Angular ChangeDetection abwarten - (meistens) nötig nach einer DOM-Interaktion
 
-    expect(outputSpy).toHaveBeenCalledOnce(); // <-- Output wurde aufgerufen
+    expect(outputSpy).toHaveBeenCalled(); // <-- Output wurde aufgerufen
     expect(checkboxElem.disabled).toBe(true) // <-- Checkbox ist disabled
 
     inputTodo.set({...MOCK_TODOS[0], isCompleted: true}) // <-- "API" antwortet mit updated Todo

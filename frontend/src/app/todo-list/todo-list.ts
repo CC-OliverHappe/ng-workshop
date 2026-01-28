@@ -1,8 +1,6 @@
-import {Component, inject, output } from '@angular/core';
-import {TodoListItem} from '../todo-list-item/todo-list-item';
-import {HttpClient} from '@angular/common/http';
-import {AsyncPipe} from '@angular/common';
-import {Todo} from '../types/Todo';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { TodoListItem } from '../todo-list-item/todo-list-item';
+import { Todo } from '../types/Todo';
 import { TodoStateService } from '../state/todo-state-service';
 
 @Component({
@@ -12,6 +10,7 @@ import { TodoStateService } from '../state/todo-state-service';
   ],
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoList {
   private todoState = inject(TodoStateService)

@@ -344,6 +344,28 @@ Als Test-Runner nutzen das Projekt Vitest. Starte die Tests entweder über deine
 
 ---
 
+## Fragen aus der Session
+
+1. Wie mocke ich component von libraries die ich in meinem Test nicht betrachten möchte (z.B. PrimeNG Components)?
+
+> Mit Component-Stubs lässt sich eine Component im Template mit einer Mock-Implementierung überschreiben und rendern. https://angular.dev/guide/testing/components-scenarios#stubbing-unneeded-components
+> Mit dem Angular `fixture.debugElement` lassen sich Events (outputs, click, etc...) auf den stubs simulieren.
+
+2. Wie kann ich komplexere Mocks schnell erstellen?
+
+> https://www.npmjs.com/package/ng-mocks ngMocks ist eine ziemlich mächtige Mocking Library um umfangreiche Mocks zu erstellen. Zusätzlich kann es eine gute Idee sein,
+> komplexere Mocks global zu definieren und bei Bedarf zu importieren. Bei häufig genutzten Mocks (z.B. i18n oder UserState) kann man diese auch in der jest config für alle Tests bereitstellen.
+
+3. Wie typisiere ich partielle Mocks?
+
+> s. Typescripts Utility Types https://www.typescriptlang.org/docs/handbook/utility-types.html
+> Besonders nützlich: Partial<T>, Omit<T> (bzw. Exclude<T>) und Pick<T> (bzw. Extract<T>)
+
+4. Wie teste ich komplexere User-Interaktionen (z.B. Tastaturnavigation)?
+
+> Mit der Angular Testing Library  (https://testing-library.com/docs/angular-testing-library/intro/) lassen sich User-Interaktionen sehr realistisch simulieren.
+> Außerdem bietet Testing Library viele Assertions um UI-Zustände spezifischer zu testen. (z.B. expect(element).toBeVisible())
+
 ## Development server
 
 To start a local development server, run:
